@@ -1,13 +1,14 @@
 package net.niantic.pokemon.application.domain.entities.enums;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.niantic.pokemon.application.domain.entities.enums.convert.service.DesserializadorEnum;
 import net.niantic.pokemon.application.domain.entities.enums.convert.interfaces.ValorEnum;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonDeserialize(using = DesserializadorEnum.class)
 public enum Gym implements ValorEnum<String> {
 
@@ -20,11 +21,11 @@ public enum Gym implements ValorEnum<String> {
     Fire("Fire", "Blaine"),
     Earth("Earth", "Giovanni");
 
-    private String badge;
-    private String leader;
+    private final String badge;
+    private final String leader;
 
     @Override
     public String getValor() {
-        return null;
+        return "";
     }
 }

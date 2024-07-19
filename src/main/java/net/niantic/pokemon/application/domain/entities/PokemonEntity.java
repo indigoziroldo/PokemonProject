@@ -2,10 +2,10 @@ package net.niantic.pokemon.application.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import net.niantic.pokemon.application.domain.entities.embbedable.TypePokemonEmbbedable;
+import net.niantic.pokemon.application.domain.entities.embbedable.PokemonId;
+import net.niantic.pokemon.application.domain.entities.enums.Region;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -13,24 +13,14 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "pokemon", schema = "atividade_pokemon")
+@Table(name = "pokemons", schema = "public")
 public class PokemonEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "Name")
-    private String name;
-
-    @Column(name = "Type")
-    private String type;
-
-    @Column(name = "Total")
-    private Long total;
+    @EmbeddedId
+    private PokemonId id;
 
     @Column(name = "Hp")
-    private Long hp;
+    private BigDecimal hp;
 
     @Column(name = "Attack")
     private Long attack;
@@ -41,12 +31,7 @@ public class PokemonEntity {
     @Column(name = "Speed")
     private Long speed;
 
-    @Column(name = "Generation")
-    private Long generation;
+    @Column(name = "Region")
+    private Region region;
 
-    @ManyToMany
-    Set<CapturedPokemonEntity> capturedPokemons;
-
-    @Embedded
-    TypePokemonEmbbedable TypePokemon;
 }

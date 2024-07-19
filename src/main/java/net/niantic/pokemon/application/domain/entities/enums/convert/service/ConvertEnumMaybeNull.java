@@ -1,5 +1,6 @@
 package net.niantic.pokemon.application.domain.entities.enums.convert.service;
 
+import net.niantic.pokemon.application.domain.entities.enums.convert.interfaces.ConvertEnum;
 import net.niantic.pokemon.application.domain.entities.enums.convert.interfaces.ValorEnum;
 
 import java.util.Objects;
