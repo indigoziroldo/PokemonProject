@@ -7,6 +7,10 @@ import net.niantic.pokemon.application.domain.rest.dto.PlaceDTO;
 public class BattleForm {
 
     private Long id;
-    private PlaceDTO placeDTO;
+    private PlaceForm placeForm;
+    private String startTime;
+    private String endTime;
+    private PokemonCapturedForm pokemonCapturedForm;
+    private PokemonForm pokemonForm;
 
 }
