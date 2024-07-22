@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import net.niantic.pokemon.application.domain.entities.enums.Gender;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -11,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users", schema = "public")
+@Table(name = "TRAINER", schema = "public")
 public class TrainerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,12 +34,12 @@ public class TrainerEntity {
     private Gender gender;
 
     @OneToMany(mappedBy = "trainer")
-    private Set<PokemonEntity> pokemons;
+    private List<PokemonEntity> pokemons;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "trainer_battles",
     joinColumns = @JoinColumn(name = "trainer_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "battle_id", referencedColumnName = "id"))
-    private Set<BattleEntity> battles;
+    private List<BattleEntity> battles;
 
 }

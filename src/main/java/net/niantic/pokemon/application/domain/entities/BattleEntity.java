@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Battle", schema = "public")
+@Table(name = "BATTLE", schema = "public")
 public class BattleEntity {
 
     @Id
@@ -34,7 +34,7 @@ public class BattleEntity {
     private PlaceEntity place;
 
     @ManyToMany(mappedBy = "battle")
-    private Set<TrainerEntity> trainers;
+    private List<TrainerEntity> trainers;
 
 
 }

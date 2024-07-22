@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "gym", schema = "public")
+@Table(name = "PLACE", schema = "public")
 public class PlaceEntity {
 
     @Id
@@ -31,6 +31,5 @@ public class PlaceEntity {
 
     @EmbeddedId
     private City city;
-
 
 }

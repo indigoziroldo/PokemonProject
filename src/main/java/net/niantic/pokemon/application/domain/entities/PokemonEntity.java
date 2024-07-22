@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "pokemons", schema = "public")
+@Table(name = "POKEMON", schema = "public")
 public class PokemonEntity {
 
    @Id

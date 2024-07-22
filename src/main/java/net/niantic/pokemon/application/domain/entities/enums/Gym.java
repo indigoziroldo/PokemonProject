@@ -8,6 +8,7 @@ import net.niantic.pokemon.application.domain.entities.enums.convert.service.Des
 import net.niantic.pokemon.application.domain.entities.enums.convert.interfaces.ValorEnum;
 
 @Getter
+
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonDeserialize(using = DesserializadorEnum.class)
 public enum Gym implements ValorEnum<String> {
@@ -24,8 +25,4 @@ public enum Gym implements ValorEnum<String> {
     private final String badge;
     private final String leader;
 
-    @Override
-    public String getValor() {
-        return "";
-    }
 }
