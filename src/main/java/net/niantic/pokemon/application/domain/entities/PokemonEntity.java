@@ -2,8 +2,8 @@ package net.niantic.pokemon.application.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import net.niantic.pokemon.application.domain.entities.embbedable.PokemonId;
 import net.niantic.pokemon.application.domain.entities.enums.Region;
+import net.niantic.pokemon.application.domain.entities.enums.Type;
 
 import java.math.BigDecimal;
 
@@ -16,8 +16,15 @@ import java.math.BigDecimal;
 @Table(name = "pokemons", schema = "public")
 public class PokemonEntity {
 
-    @EmbeddedId
-    private PokemonId id;
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+
+   @Column(name = "name")
+   private String name;
+
+   @Column(name = "type")
+   private Type type;
 
     @Column(name = "Hp")
     private BigDecimal hp;
@@ -31,7 +38,8 @@ public class PokemonEntity {
     @Column(name = "Speed")
     private Long speed;
 
-    @Column(name = "Region")
-    private Region region;
+    @ManyToOne
+    @JoinColumn(name = "pokemon_id", nullable = false)
+    private TrainerEntity trainer;
 
 }

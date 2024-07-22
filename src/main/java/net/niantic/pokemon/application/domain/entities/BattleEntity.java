@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,26 +23,18 @@ public class BattleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private PlaceEntity place;
-
     @Column
     private LocalDateTime startTime;
 
     @Column
     private LocalDateTime endTime;
 
-    @Column(name = "captured_pokemon")
-    private Long idcapturedPokemon;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "place_id", referencedColumnName = "id")
+    private PlaceEntity place;
 
-    @OneToOne
-    @JoinColumn(name = "captured_pokemon",updatable = false, insertable = false)
-    private PokemonCapturedEntity capturedPokemon;
+    @ManyToMany(mappedBy = "battle")
+    private Set<TrainerEntity> trainers;
 
-    @Column(name = "random_pokemon")
-    private Long idrandomPokemon;
 
-    @OneToOne
-    @JoinColumn(name = "random_pokemon",updatable = false,insertable = false)
-    private PokemonEntity randomPokemon;
 }

@@ -2,9 +2,9 @@ package net.niantic.pokemon.application.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import net.niantic.pokemon.application.domain.entities.enums.FavoritePokemon;
 import net.niantic.pokemon.application.domain.entities.enums.Gender;
-import net.niantic.pokemon.application.domain.entities.enums.Region;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -12,7 +12,7 @@ import net.niantic.pokemon.application.domain.entities.enums.Region;
 @AllArgsConstructor
 @Entity
 @Table(name = "users", schema = "public")
-public class UserEntity {
+public class TrainerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -29,13 +29,16 @@ public class UserEntity {
     @Column
     private String password;
 
-    @Column(name = "battles_earned")
-    private Long battlesEarned;
-
-    @Column(name = "favorite_pokemon")
-    private FavoritePokemon favoritePokemon;
-
     @Column
     private Gender gender;
+
+    @OneToMany(mappedBy = "trainer")
+    private Set<PokemonEntity> pokemons;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "trainer_battles",
+    joinColumns = @JoinColumn(name = "trainer_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "battle_id", referencedColumnName = "id"))
+    private Set<BattleEntity> battles;
 
 }

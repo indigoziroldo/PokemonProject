@@ -27,10 +27,8 @@ public class ItemsEntity {
     @Column(name = "category")
     private String category;
 
-    @Column(name = "basePower")
-    private BigDecimal basePower;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trainer_id")
+    private TrainerEntity trainer;
 
-    @ManyToOne
-    @JoinColumn(name = "id_bag", nullable = false)
-    private BagEntity bag;
 }

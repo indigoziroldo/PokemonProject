@@ -1,7 +1,9 @@
 package net.niantic.pokemon.application.domain.entities;
 
+import net.niantic.pokemon.application.domain.entities.embbedable.City;
 import net.niantic.pokemon.application.domain.entities.enums.Gym;
 import net.niantic.pokemon.application.domain.entities.enums.Region;
+import net.niantic.pokemon.application.domain.entities.embbedable.City;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Embeddable
+@Entity
 @Table(name = "gym", schema = "public")
 public class PlaceEntity {
 
@@ -22,10 +24,13 @@ public class PlaceEntity {
     private Long id;
 
     @Column
-    private Gym Gym;
+    private Region region;
 
     @Column
-    private String City;
+    private Gym Gym;
+
+    @EmbeddedId
+    private City city;
 
 
 }
