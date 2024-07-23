@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PokemonRepository extends JpaRepository <PokemonEntity, Long> {
+public interface PokemonRepository extends JpaRepository<PokemonEntity, Long> {
 
     List<PokemonEntity> findAllByTrainer(TrainerEntity trainer);
 }

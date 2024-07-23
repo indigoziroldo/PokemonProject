@@ -31,12 +31,12 @@ public class TrainerServiceImpl {
 
     public List<PokemonDTO> pokemonsPerTrainer (Long id){
         Optional<TrainerEntity> trainerEntity = trainerRepository.findById(id);
-        validartreinador(trainerEntity);
+        authTrainer(trainerEntity);
         List<PokemonEntity> pokemonEntities = pokemonRepository.findAllByTrainer(trainerEntity.get());
 
         return pokemonEntities.stream().map(PokemonDTO::new).collect(Collectors.toList());
     }
-    void validartreinador(Optional<TrainerEntity> trainerEntity){
+    void authTrainer(Optional<TrainerEntity> trainerEntity){
         if(trainerEntity.isEmpty()){
             throw new RuntimeException("trainer not found");
         }
