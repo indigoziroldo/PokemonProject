@@ -4,9 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.niantic.pokemon.application.domain.entities.TrainerEntity;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -19,7 +20,17 @@ public class TrainerDTO {
     private String email;
     private String password;
     private String gender;
-    private List<PokemonDTO> pokemon;
-    private List<BattleDTO> battle;
 
+    public TrainerDTO(TrainerEntity trainerEntity) {
+        this.id = trainerEntity.getId();
+        this.firstName = trainerEntity.getFirstName();
+        this.secondName = trainerEntity.getSecondName();
+        this.email = trainerEntity.getEmail();
+        this.password = trainerEntity.getPassword();
+        this.gender = trainerEntity.getGender().getDescricao();
+    }
+
+    public static List<TrainerDTO> convertToDTO(List<TrainerEntity> trainerEntity) {
+        return trainerEntity.stream().map(TrainerDTO::new).collect(Collectors.toList());
+    }
 }

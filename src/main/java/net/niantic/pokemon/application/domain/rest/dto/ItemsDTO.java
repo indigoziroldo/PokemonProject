@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.niantic.pokemon.application.domain.entities.ItemsEntity;
+import net.niantic.pokemon.application.domain.entities.TrainerEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;

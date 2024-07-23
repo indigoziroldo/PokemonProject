@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,9 +24,9 @@ public class PokemonDTO {
     private Long attack;
     private Long defense;
     private Long speed;
-    private List<TrainerDTO> trainer;
+    private String nameTrainer;
 
-    public PokemonDTO(PokemonEntity pokemonEntity, List<TrainerDTO> trainer) {
+    public PokemonDTO(PokemonEntity pokemonEntity) {
         this.id = pokemonEntity.getId();
         this.name = pokemonEntity.getName();
         this.type = pokemonEntity.getType().getDescription();
@@ -33,8 +34,11 @@ public class PokemonDTO {
         this.attack = pokemonEntity.getAttack();
         this.defense = pokemonEntity.getDefense();
         this.speed = pokemonEntity.getSpeed();
-        this.trainer = Objects.requireNonNull(trainer, "trainer");
+        this.nameTrainer = pokemonEntity.getTrainer().getFirstName();
+    }
 
+    public static List<PokemonDTO> convertToDTO(List<PokemonEntity> pokemonEntity) {
+        return pokemonEntity.stream().map(PokemonDTO::new).collect(Collectors.toList());
     }
 
 }

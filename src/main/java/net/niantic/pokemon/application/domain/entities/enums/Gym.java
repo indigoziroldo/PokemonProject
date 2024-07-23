@@ -25,4 +25,8 @@ public enum Gym implements ValorEnum<String> {
     private final String badge;
     private final String leader;
 
+    public String getValor(){
+        return this.badge;
+    }
+
 }

@@ -33,7 +33,10 @@ public class BattleEntity {
     @JoinColumn(name = "place_id", referencedColumnName = "id")
     private PlaceEntity place;
 
-    @ManyToMany(mappedBy = "battle")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "trainer_battles",
+            joinColumns = @JoinColumn(name = "battle_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "trainer_id", referencedColumnName = "id"))
     private List<TrainerEntity> trainers;
 
 

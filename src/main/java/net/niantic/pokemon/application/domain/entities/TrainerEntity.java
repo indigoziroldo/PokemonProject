@@ -11,6 +11,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Entity
 @Table(name = "TRAINER", schema = "public")
 public class TrainerEntity {
@@ -38,8 +39,8 @@ public class TrainerEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "trainer_battles",
-    joinColumns = @JoinColumn(name = "trainer_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "battle_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "trainer_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "battle_id", referencedColumnName = "id"))
     private List<BattleEntity> battles;
 
 }
