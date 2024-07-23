@@ -36,6 +36,6 @@ public enum Type implements ValorEnum<String> {
 
     @Override
     public String getValor() {
-        return "";
+        return this.description;
     }
 }

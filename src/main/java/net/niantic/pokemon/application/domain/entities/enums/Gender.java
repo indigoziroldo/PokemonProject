@@ -11,12 +11,16 @@ import net.niantic.pokemon.application.domain.entities.enums.convert.service.Des
 @JsonDeserialize(using = DesserializadorEnum.class)
 public enum Gender implements ValorEnum<String> { // trocar pra ingles
 
-    Feminino("F","Feminino"),
-    Masculino("M","Masculino"),
-    Outros("O","Outros"),
-    PrefiroNaoDeclarar("P","PrefiroNaoDeclarar");
+    Feminino("W","Woman"),
+    Masculino("M","Man"),
+    Outros("O","Other"),
+    PrefiroNaoDeclarar("N","Not Declared");
 
-    private final String valor;
-    private final String descricao;
+    private final String value;
+    private final String description;
 
+    @Override
+    public String getValor() {
+        return this.description;
+    }
 }

@@ -20,11 +20,11 @@ public enum Region implements ValorEnum<String> {
     Alola("Alo","Alola"),
     Galar("Gal","Galar");
 
-    private final String sigla;
-    private final String descricao;
+    private final String value;
+    private final String description;
 
     @Override
     public String getValor() {
-        return "";
+        return this.description;
     }
 }

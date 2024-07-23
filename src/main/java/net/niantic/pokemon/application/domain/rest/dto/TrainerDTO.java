@@ -27,7 +27,7 @@ public class TrainerDTO {
         this.secondName = trainerEntity.getSecondName();
         this.email = trainerEntity.getEmail();
         this.password = trainerEntity.getPassword();
-        this.gender = trainerEntity.getGender().getDescricao();
+        this.gender = trainerEntity.getGender().getDescription();
     }
 
     public static List<TrainerDTO> convertToDTO(List<TrainerEntity> trainerEntity) {

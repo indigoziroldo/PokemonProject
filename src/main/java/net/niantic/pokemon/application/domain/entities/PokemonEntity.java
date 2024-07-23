@@ -26,16 +26,16 @@ public class PokemonEntity {
    @Column(name = "type")
    private Type type;
 
-    @Column(name = "Hp")
+    @Column(name = "hp")
     private BigDecimal hp;
 
-    @Column(name = "Attack")
+    @Column(name = "attack")
     private Long attack;
 
-    @Column(name = "Defense")
+    @Column(name = "defense")
     private Long defense;
 
-    @Column(name = "Speed")
+    @Column(name = "speed")
     private Long speed;
 
     @ManyToOne
