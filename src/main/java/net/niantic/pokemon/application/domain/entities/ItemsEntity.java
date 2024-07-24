@@ -27,6 +27,9 @@ public class ItemsEntity {
     @Column(name = "category")
     private String category;
 
+    @Column(name = "base_power")
+    private BigDecimal basePower;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainer_id")
     private TrainerEntity trainer;
