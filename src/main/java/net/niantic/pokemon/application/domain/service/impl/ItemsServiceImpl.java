@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.niantic.pokemon.application.domain.entities.ItemsEntity;
 import net.niantic.pokemon.application.domain.repository.ItemsRepository;
+import net.niantic.pokemon.application.domain.repository.TrainerRepository;
 import net.niantic.pokemon.application.domain.rest.dto.ItemsDTO;
 import net.niantic.pokemon.application.domain.rest.forms.ItemsForm;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class ItemsServiceImpl {
 
     private final ItemsRepository itemsRepository;
+    private final TrainerRepository trainerRepository;
 
     //CREATE
     @Transactional
@@ -49,6 +51,7 @@ public class ItemsServiceImpl {
         itemsEntity.setDescription(itemsForm.getDescription());
         itemsEntity.setCategory(itemsForm.getCategory());
         itemsEntity.setBasePower(itemsForm.getBasePower());
+        itemsEntity.setTrainer(trainerRepository.findById(id).get(itemsForm.getTrainerId()));
         return itemsEntity;
     }
 

@@ -29,9 +29,15 @@ public class BattleEntity {
     @Column
     private LocalDateTime endTime;
 
+    @Column(name = "place_id")
+    private Long placeId;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "place_id", referencedColumnName = "id")
     private PlaceEntity place;
+
+    @Column(name = "trainers_ids")
+    private List<Long> trainerIds;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "trainer_battles",

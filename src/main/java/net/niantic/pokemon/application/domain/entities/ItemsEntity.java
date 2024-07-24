@@ -30,6 +30,9 @@ public class ItemsEntity {
     @Column(name = "base_power")
     private BigDecimal basePower;
 
+    @Column(name = "trainer_id")
+    private Long trainerId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainer_id")
     private TrainerEntity trainer;

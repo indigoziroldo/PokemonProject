@@ -12,5 +12,5 @@ public class ItemsForm {
     private String description;
     private String category;
     private BigDecimal basePower;
-
+    private Long TrainerId;
 }
