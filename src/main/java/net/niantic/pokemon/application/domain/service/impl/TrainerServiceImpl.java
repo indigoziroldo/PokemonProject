@@ -6,6 +6,8 @@ import net.niantic.pokemon.application.domain.repository.PokemonRepository;
 import net.niantic.pokemon.application.domain.repository.TrainerRepository;
 import net.niantic.pokemon.application.domain.rest.dto.PokemonDTO;
 import net.niantic.pokemon.application.domain.rest.dto.TrainerDTO;
+import net.niantic.pokemon.application.domain.rest.forms.TrainerForm;
+import net.niantic.pokemon.application.domain.service.TrainerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class TrainerServiceImpl {
+public class TrainerServiceImpl implements TrainerService {
 
     private final TrainerRepository trainerRepository;
     private final PokemonRepository pokemonRepository;
@@ -42,4 +44,23 @@ public class TrainerServiceImpl {
         }
     }
 
+    @Override
+    public void createTrainer(TrainerForm trainerForm) {
+
+    }
+
+    @Override
+    public List<TrainerDTO> getAllTrainers() {
+        return List.of();
+    }
+
+    @Override
+    public void updateTrainer(TrainerForm trainerForm, Long id) {
+
+    }
+
+    @Override
+    public void deleteTrainer(Long id) {
+
+    }
 }

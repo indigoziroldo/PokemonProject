@@ -6,6 +6,8 @@ import net.niantic.pokemon.application.domain.repository.BattleRepository;
 import net.niantic.pokemon.application.domain.repository.TrainerRepository;
 import net.niantic.pokemon.application.domain.rest.dto.BattleDTO;
 import net.niantic.pokemon.application.domain.rest.dto.TrainerDTO;
+import net.niantic.pokemon.application.domain.rest.forms.BattleForm;
+import net.niantic.pokemon.application.domain.service.BattleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class BattleServiceImpl {
+public class BattleServiceImpl implements BattleService {
 
     private final BattleRepository battleRepository;
     private final TrainerRepository trainerRepository;
@@ -44,4 +46,23 @@ public class BattleServiceImpl {
     }
 
 
+    @Override
+    public void createBattle(BattleForm battleForm) {
+
+    }
+
+    @Override
+    public List<BattleDTO> getAllBattles() {
+        return List.of();
+    }
+
+    @Override
+    public void updateBattle(BattleForm battleForm, Long id) {
+
+    }
+
+    @Override
+    public void deleteBattle(Long id) {
+
+    }
 }

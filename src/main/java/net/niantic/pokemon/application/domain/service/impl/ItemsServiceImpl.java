@@ -8,6 +8,7 @@ import net.niantic.pokemon.application.domain.repository.TrainerRepository;
 import net.niantic.pokemon.application.domain.rest.dto.ItemsDTO;
 import net.niantic.pokemon.application.domain.rest.exception.ResourceNotFoundException;
 import net.niantic.pokemon.application.domain.rest.forms.ItemsForm;
+import net.niantic.pokemon.application.domain.service.ItemsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ItemsServiceImpl {
+public class ItemsServiceImpl implements ItemsService {
 
     private final ItemsRepository itemsRepository;
     private final TrainerRepository trainerRepository;
@@ -47,6 +48,11 @@ public class ItemsServiceImpl {
         Optional<ItemsEntity> itemsEntity = itemsRepository.findById(id);
         ItemsEntity itemUpdated = itemsEntity.orElseThrow(() -> new ResourceNotFoundException("Item not found"));
         itemsRepository.save(convertFormToEntity(itemsForm, id));
+    }
+
+    @Override
+    public void deleteItems(Long id) {
+
     }
 
     public ItemsEntity convertFormToEntity(ItemsForm itemsForm, Long id){
