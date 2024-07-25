@@ -6,8 +6,12 @@ import net.niantic.pokemon.application.domain.entities.ItemsEntity;
 import net.niantic.pokemon.application.domain.repository.ItemsRepository;
 import net.niantic.pokemon.application.domain.repository.TrainerRepository;
 import net.niantic.pokemon.application.domain.rest.dto.ItemsDTO;
+import net.niantic.pokemon.application.domain.rest.exception.ResourceNotFoundException;
 import net.niantic.pokemon.application.domain.rest.forms.ItemsForm;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,20 +31,21 @@ public class ItemsServiceImpl {
         itemsEntity.setDescription(itemsForm.getDescription());
         itemsEntity.setCategory(itemsForm.getCategory());
         itemsEntity.setBasePower(itemsForm.getBasePower());
+        itemsEntity.setTrainerId(itemsForm.getTrainerId());
         this.itemsRepository.save(itemsEntity);
     }
 
     //READ
     public List<ItemsDTO> getAllItems(){
         List<ItemsEntity> itemsEntities = itemsRepository.findAll();
-        if(itemsEntities.isEmpty()) throw new RuntimeException("No items found");
+        if(itemsEntities.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Items not found");
         return ItemsDTO.convertToDTO(itemsEntities);
     }
 
     //UPDATE
     public void updateItems(ItemsForm itemsForm, Long id){
         Optional<ItemsEntity> itemsEntity = itemsRepository.findById(id);
-        if(itemsEntity.isEmpty()) throw new RuntimeException("This item does not exist");
+        ItemsEntity itemUpdated = itemsEntity.orElseThrow(() -> new ResourceNotFoundException("Item not found"));
         itemsRepository.save(convertFormToEntity(itemsForm, id));
     }
 
@@ -51,7 +56,10 @@ public class ItemsServiceImpl {
         itemsEntity.setDescription(itemsForm.getDescription());
         itemsEntity.setCategory(itemsForm.getCategory());
         itemsEntity.setBasePower(itemsForm.getBasePower());
-        itemsEntity.setTrainer(trainerRepository.findById(id).get(itemsForm.getTrainerId()));
+        itemsEntity.setTrainer(
+                trainerRepository
+                    .findById(itemsForm.getTrainerId())
+                    .orElseThrow( () -> new ResourceNotFoundException("Trainer not found")));
         return itemsEntity;
     }
 
