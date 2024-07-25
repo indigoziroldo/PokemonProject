@@ -52,7 +52,7 @@ public class ItemsServiceImpl implements ItemsService {
 
     @Override
     public void deleteItems(Long id) {
-
+        itemsRepository.deleteById(id);
     }
 
     public ItemsEntity convertFormToEntity(ItemsForm itemsForm, Long id){

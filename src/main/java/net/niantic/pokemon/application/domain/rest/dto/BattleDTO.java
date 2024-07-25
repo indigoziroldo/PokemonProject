@@ -24,7 +24,7 @@ public class BattleDTO {
         this.startTime = battleEntity.getStartTime();
         this.endTime = battleEntity.getEndTime();
         this.placeDTO = new PlaceDTO(battleEntity.getPlace());
-        this.trainerDTO = new TrainerDTO(battleEntity.getTrainers());
+        this.trainerDTO = new TrainerDTO(battleEntity.getTrainer());
     }
     public static List<BattleDTO> convertToDTO(List<BattleEntity> battleEntities) {
         return battleEntities

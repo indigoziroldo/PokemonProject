@@ -4,14 +4,17 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import net.niantic.pokemon.application.domain.rest.dto.PlaceDTO;
 
+import java.util.List;
+
 @Getter
 public class BattleForm {
 
     private Long id;
     @Size(min = 1, max = 50)
-    private PlaceForm placeForm;
     private String startTime;
     private String endTime;
-    private PokemonForm pokemonForm;
+    private Long placeId;
+    private Long trainer1Id;
+    private Long trainer2Id;
 
 }
