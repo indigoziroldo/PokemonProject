@@ -2,6 +2,7 @@ package net.niantic.pokemon.application.domain.service.impl;
 
 import net.niantic.pokemon.application.domain.entities.PokemonEntity;
 import net.niantic.pokemon.application.domain.entities.TrainerEntity;
+import net.niantic.pokemon.application.domain.entities.enums.Gender;
 import net.niantic.pokemon.application.domain.repository.PokemonRepository;
 import net.niantic.pokemon.application.domain.repository.TrainerRepository;
 import net.niantic.pokemon.application.domain.rest.dto.PokemonDTO;
@@ -46,6 +47,12 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public void createTrainer(TrainerForm trainerForm) {
+        TrainerEntity trainerEntity = new TrainerEntity();
+        trainerEntity.setFirstName(trainerForm.getFirstName());
+        trainerEntity.setSecondName(trainerForm.getLastName());
+        trainerEntity.setEmail(trainerForm.getEmail());
+        trainerEntity.setPassword(trainerForm.getPassword());
+        trainerEntity.setGender(Gender.valueOf(trainerForm.getGender()));
 
     }
 

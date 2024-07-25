@@ -50,11 +50,6 @@ public class ItemsServiceImpl implements ItemsService {
         itemsRepository.save(convertFormToEntity(itemsForm, id));
     }
 
-    @Override
-    public void deleteItems(Long id) {
-        itemsRepository.deleteById(id);
-    }
-
     public ItemsEntity convertFormToEntity(ItemsForm itemsForm, Long id){
         ItemsEntity itemsEntity = new ItemsEntity();
         itemsEntity.setId(id);
@@ -69,7 +64,8 @@ public class ItemsServiceImpl implements ItemsService {
         return itemsEntity;
     }
 
-    public void deleteItemsById(Long id){
+    @Override
+    public void deleteItems(Long id) {
         itemsRepository.deleteById(id);
     }
 }

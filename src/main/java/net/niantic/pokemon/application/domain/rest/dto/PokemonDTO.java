@@ -24,7 +24,7 @@ public class PokemonDTO {
     private Long attack;
     private Long defense;
     private Long speed;
-    private String nameTrainer;
+    private Long trainerId;
 
     public PokemonDTO(PokemonEntity pokemonEntity) {
         this.id = pokemonEntity.getId();
@@ -34,7 +34,7 @@ public class PokemonDTO {
         this.attack = pokemonEntity.getAttack();
         this.defense = pokemonEntity.getDefense();
         this.speed = pokemonEntity.getSpeed();
-        this.nameTrainer = pokemonEntity.getTrainer().getFirstName();
+        this.trainerId = pokemonEntity.getTrainerId();
     }
 
     public static List<PokemonDTO> convertToDTO(List<PokemonEntity> pokemonEntity) {

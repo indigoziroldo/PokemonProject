@@ -23,7 +23,7 @@ public class PokemonEntity {
    @Column(name = "name")
    private String name;
 
-   @Column(name = "type")
+   @Embedded
    private Type type;
 
     @Column(name = "hp")
@@ -37,6 +37,9 @@ public class PokemonEntity {
 
     @Column(name = "speed")
     private Long speed;
+
+    @Column(name = "trainer_id")
+    private Long trainerId;
 
     @ManyToOne
     @JoinColumn(name = "pokemon_id", nullable = false)
