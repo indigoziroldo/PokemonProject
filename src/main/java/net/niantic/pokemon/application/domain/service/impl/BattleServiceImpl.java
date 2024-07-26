@@ -1,13 +1,17 @@
 package net.niantic.pokemon.application.domain.service.impl;
 
 import net.niantic.pokemon.application.domain.entities.BattleEntity;
+import net.niantic.pokemon.application.domain.entities.BattleTrainerEntity;
+import net.niantic.pokemon.application.domain.entities.PlaceEntity;
 import net.niantic.pokemon.application.domain.entities.TrainerEntity;
 import net.niantic.pokemon.application.domain.repository.BattleRepository;
+import net.niantic.pokemon.application.domain.repository.BattleTrainerRepository;
 import net.niantic.pokemon.application.domain.repository.PlaceRepository;
 import net.niantic.pokemon.application.domain.repository.TrainerRepository;
 import net.niantic.pokemon.application.domain.rest.dto.BattleDTO;
 import net.niantic.pokemon.application.domain.rest.dto.TrainerDTO;
 import net.niantic.pokemon.application.domain.rest.exception.ResourceNotFoundException;
+import net.niantic.pokemon.application.domain.rest.exception.UnprocessableEntityException;
 import net.niantic.pokemon.application.domain.rest.forms.BattleForm;
 import net.niantic.pokemon.application.domain.service.BattleService;
 import org.springframework.http.HttpStatus;
@@ -22,79 +26,99 @@ import java.util.stream.Collectors;
 @Service
 public class BattleServiceImpl implements BattleService {
 
-    private final BattleRepository battleRepository;
-    private final TrainerRepository trainerRepository;
-    private final PlaceRepository placeRepository;
+  private BattleRepository battleRepository;
+  private TrainerRepository trainerRepository;
+  private PlaceRepository placeRepository;
+  private BattleTrainerRepository battleTrainerRepository;
 
-    public BattleServiceImpl(BattleRepository battleRepository, TrainerRepository trainerRepository, PlaceRepository placeRepository) {
-        this.battleRepository = battleRepository;
-        this.trainerRepository = trainerRepository;
-        this.placeRepository = placeRepository;
+  public List<BattleDTO> battles() {
+    List<BattleEntity> battleEntities = battleRepository.findAll();
+    return battleEntities.stream().map(BattleDTO::new).collect(Collectors.toList());
+  }
+
+  public List<TrainerDTO> trainersPerBattle(Long id) {
+    Optional<BattleEntity> battleEntity = battleRepository.findTrainersById(id);
+    authBattle(battleEntity);
+    List<TrainerEntity> trainerEntities = this.trainerRepository.findAllByBattle(battleEntity.get());
+
+    return trainerEntities.stream().map(TrainerDTO::new).collect(Collectors.toList());
+
+  }
+
+  void authBattle(Optional<BattleEntity> battleEntity) {
+    if (battleEntity.isEmpty()) {
+      throw new RuntimeException("Battle entity not found");
     }
+  }
 
-    public List<BattleDTO> battles(){
-        List<BattleEntity> battleEntities = battleRepository.findAll();
-        return battleEntities.stream().map(BattleDTO::new).collect(Collectors.toList());
-    }
+  //CREATE
+  @Override
+  public void createBattle(BattleForm battleForm) {
+    TrainerEntity trainer1 = trainerRepository.findById(battleForm.getTrainer1Id())
+        .orElseThrow(() -> new UnprocessableEntityException("Trainer doesn't exist"));
 
-    public List<TrainerDTO> trainersPerBattle(Long id){
-        Optional<BattleEntity> battleEntity = battleRepository.findTrainersById(id);
-        authBattle(battleEntity);
-        List<TrainerEntity> trainerEntities = this.trainerRepository.findAllByBattle(battleEntity.get());
+    TrainerEntity trainer2 = trainerRepository.findById(battleForm.getTrainer2Id())
+        .orElseThrow(() -> new UnprocessableEntityException("Trainer doesn't exist"));
 
-        return trainerEntities.stream().map(TrainerDTO::new).collect(Collectors.toList());
+    PlaceEntity place = placeRepository.findById(battleForm.getPlaceId())
+        .orElseThrow(() -> new UnprocessableEntityException("Place doesn't exist"));
 
-    }
+    BattleEntity battleEntity = new BattleEntity();
+    battleEntity.setStartTime(LocalDateTime.parse(battleForm.getStartTime()));
+    battleEntity.setEndTime(LocalDateTime.parse(battleForm.getEndTime()));
+    battleEntity.setPlaceId(place.getId());
 
-    void authBattle(Optional<BattleEntity> battleEntity){
-        if(battleEntity.isEmpty()){
-            throw new RuntimeException("Battle entity not found");
-        }
-    }
+    battleEntity = this.battleRepository.save(battleEntity);
 
-    //CREATE
-    @Override
-    public void createBattle(BattleForm battleForm) {
-        BattleEntity battleEntity = new BattleEntity();
-        battleEntity.setStartTime(LocalDateTime.parse(battleForm.getStartTime()));
-        battleEntity.setEndTime(LocalDateTime.parse(battleForm.getEndTime()));
-        battleEntity.setPlaceId(battleForm.getPlaceId());
-        battleEntity.setTrainerIds(battleForm.getTrainersIds());
-        this.battleRepository.save(battleEntity);
+    BattleTrainerEntity battleTrainer1Entity = new BattleTrainerEntity();
+    battleTrainer1Entity.setBattleId(battleEntity.getId());
+    battleTrainer1Entity.setTrainerId(trainer1.getId());
 
-    }
+    battleTrainerRepository.save(battleTrainer1Entity);
 
-    //READ
-    @Override
-    public List<BattleDTO> getAllBattles() {
-        List<BattleEntity> battleEntities = battleRepository.findAll();
-        if(battleEntities.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Battle not found");
-        return BattleDTO.convertToDTO(battleEntities);
-    }
+    BattleTrainerEntity battleTrainer2Entity = new BattleTrainerEntity();
+    battleTrainer2Entity.setBattleId(battleEntity.getId());
+    battleTrainer2Entity.setTrainerId(trainer2.getId());
 
-    //UPDATE
-    @Override
-    public void updateBattle(BattleForm battleForm, Long id) {
-        Optional<BattleEntity> battleEntity = battleRepository.findById(id);
-        BattleEntity battleUpdated = battleEntity.orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Battle not found"));
-        battleRepository.save(convertFormToEntity(battleForm,id));
-    }
+    battleTrainerRepository.save(battleTrainer2Entity);
+  }
 
-    private BattleEntity convertFormToEntity(BattleForm battleForm, Long id) {
-        BattleEntity battleEntity = new BattleEntity();
-        battleEntity.setStartTime(LocalDateTime.parse(battleForm.getStartTime()));
-        battleEntity.setEndTime(LocalDateTime.parse(battleForm.getEndTime()));
-        battleEntity.setPlace(placeRepository
-                .findById(battleForm.getPlaceId())
-                .orElseThrow(() -> new ResourceNotFoundException("Place not found")));
-        battleEntity.setTrainer1(); // SOCORRO
-        battleEntity.setId(id);
-    }
+  //READ
+  @Override
+  public List<BattleDTO> getAllBattles() {
+    List<BattleEntity> battleEntities = battleRepository.findAll();
 
-    //DELETE
-    @Override
-    public void deleteBattle(Long id) {
+    if (battleEntities.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Battle not found");
 
-    }
+    return battleEntities.stream().map(battleEntity -> new BattleDTO(battleEntity,
+            battleEntity.getMatches().get(0).getTrainer(),
+            battleEntity.getMatches().get(1).getTrainer()))
+        .toList();
+  }
+
+  //UPDATE
+  @Override
+  public void updateBattle(BattleForm battleForm, Long id) {
+    Optional<BattleEntity> battleEntity = battleRepository.findById(id);
+    BattleEntity battleUpdated = battleEntity.orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Battle not found"));
+    battleRepository.save(convertFormToEntity(battleForm, id));
+  }
+
+  private BattleEntity convertFormToEntity(BattleForm battleForm, Long id) {
+    BattleEntity battleEntity = new BattleEntity();
+    battleEntity.setStartTime(LocalDateTime.parse(battleForm.getStartTime()));
+    battleEntity.setEndTime(LocalDateTime.parse(battleForm.getEndTime()));
+    battleEntity.setPlace(placeRepository
+        .findById(battleForm.getPlaceId())
+        .orElseThrow(() -> new ResourceNotFoundException("Place not found")));
+    battleEntity.setTrainer1(); // SOCORRO
+    battleEntity.setId(id);
+  }
+
+  //DELETE
+  @Override
+  public void deleteBattle(Long id) {
+
+  }
 }
