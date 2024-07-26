@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 public class BattleForm {
 
-    private Long id;
     @Size(min = 1, max = 50)
     private String startTime;
     private String endTime;

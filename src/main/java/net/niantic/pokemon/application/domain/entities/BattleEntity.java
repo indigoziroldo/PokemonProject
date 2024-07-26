@@ -1,15 +1,21 @@
 package net.niantic.pokemon.application.domain.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -19,34 +25,34 @@ import java.util.Set;
 @Table(name = "BATTLE", schema = "public")
 public class BattleEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column
-    private LocalDateTime startTime;
+  @Column
+  private LocalDateTime startTime;
 
-    @Column
-    private LocalDateTime endTime;
+  @Column
+  private LocalDateTime endTime;
 
-    @Column(name = "place_id")
-    private Long placeId;
+  @Column(name = "place_id")
+  private Long placeId;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "place_id", referencedColumnName = "id")
-    private PlaceEntity place;
+  @ManyToOne()
+  @JoinColumn(name = "place_id", insertable = false, updatable = false)
+  private PlaceEntity place;
 
-    @Column(name = "trainer_1")
-    private Long trainer1Id;
+  @OneToMany()
+  @JoinColumn(name = "battle_id", insertable = false, updatable = false)
+  private List<BattleTrainerEntity> matches;
 
-    @Column(name = "trainer_2")
-    private Long trainer2Id;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "trainer_battles",
-            joinColumns = @JoinColumn(name = "battle_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "trainer_id", referencedColumnName = "id"))
-    private TrainerEntity trainer;
+  // TODO: Voltar se pedirem?
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "trainer_battles",
+//            joinColumns = @JoinColumn(name = "battle_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "trainer_id", referencedColumnName = "id"))
+//    private TrainerEntity trainer;
 
 
 }
