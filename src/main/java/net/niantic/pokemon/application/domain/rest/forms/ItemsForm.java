@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class ItemsForm {
 
     private Long id;
-    @
+
     private String name;
     private String description;
     private String category;
