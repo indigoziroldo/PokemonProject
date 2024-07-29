@@ -88,7 +88,7 @@ public class BattleServiceImpl implements BattleService {
   public List<BattleDTO> getAllBattles() {
     List<BattleEntity> battleEntities = battleRepository.findAll();
 
-    if (battleEntities.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Battle not found");
+    if (battleEntities.isEmpty()) throw new ResourceNotFoundException("Battle does not exist");
 
     return battleEntities.stream().map(battleEntity -> new BattleDTO(battleEntity,
             battleEntity.getMatches().get(0).getTrainer(),
